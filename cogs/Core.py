@@ -2,6 +2,7 @@ import discord
 from discord.ext import commands
 from pymongo import MongoClient
 from discord import utils
+from EZPaginator import Paginator
 
 coll = MongoClient('mongodb://localhost:27017/').All_Servers.user
 
@@ -74,8 +75,8 @@ class Core(commands.Cog):
 
     @commands.command(name = '업')
     async def Up(self, ctx):
-        c = self.bot.get_channel(829608452384096288)
-        guild = self.bot.get_guild(829561316636491796)
+        c = self.bot.get_channel(829608452384096288) # 서버들 채널
+        guild = self.bot.get_guild(829561316636491796) # All Servers 서버
 
         channel = discord.utils.get(guild.channels, name=f'{str(ctx.guild.name)}')
         channel_id = channel.id
@@ -84,7 +85,7 @@ class Core(commands.Cog):
 
         await channel.delete()
 
-        guild = self.bot.get_guild(829561316636491796)
+        guild = self.bot.get_guild(829561316636491796) # All Servers 서버
         category = discord.utils.get(guild.categories, name='<< SERVER >>')
         channel = await guild.create_text_channel(f'{str(ctx.guild.name)}', category=category)
 
@@ -99,6 +100,25 @@ class Core(commands.Cog):
 
         await ctx.reply('서버 등록이 완료되었습니다!')
 
+    @s.command(name='목록')
+    async def server_list(self, ctx):
+        await ctx.send('<a:Load:829625589852930108> 데이터를 불러오는 중입니다.')
+        l = []
+        guild = self.bot.get_guild(829561316636491796)  # All Servers 서버
+        category = discord.utils.get(guild.categories, name='<< SERVER >>')
+
+        for i in category.channels:
+            n = i.name
+
+            with open(f"Servers/{n}.txt", "r", encoding="UTF-8") as f:
+                text = f.readlines()
+            sl = ''.join(text[0:])
+            embed = discord.Embed(title=f'{n}', description=f'{sl}', color=0x00FFFF)
+            l.append(embed)
+        msg = await ctx.reply(embed=l[0])
+        await Paginator(
+            bot=self.bot, message=msg, embeds=l, only=ctx.author
+        ).start()
 
 
 
