@@ -3,7 +3,9 @@ import asyncio
 from discord.ext import commands
 from discord.ext.commands import bot
 
-bot = commands.Bot(command_prefix=['as', 'ㅁㄴ'], help_command=None)
+i = discord.Intents.all()
+
+bot = commands.Bot(command_prefix=['as', 'ㅁㄴ'], help_command=None, intents=i)
 
 startup_extensions = ['cogs.Core']
 
@@ -29,4 +31,4 @@ async def Reload(ctx):
 
 
 
-bot.run('TOKEN')
+bot.run('ODI5NTI0OTkyODgxODUyNDU3.YG5ZWg.x-mrdCUcrKBhfyaR_TPtXjcDGc0')
