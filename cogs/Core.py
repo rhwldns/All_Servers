@@ -1,6 +1,7 @@
 import discord
 from discord.ext import commands
 from pymongo import MongoClient
+from discord import utils
 
 coll = MongoClient('mongodb://localhost:27017/').All_Servers.user
 
@@ -39,6 +40,9 @@ class Core(commands.Cog):
                     "invite": str(m)
                 })
                 await ctx.reply('서버 등록이 완료되었습니다!')
+
+                guild = self.bot.get_guild(829561316636491796)
+                category = discord.utils.get(guild.category_channels, name='Multi-Logs')
 
             else:
                 await ctx.reply('초대 링크가 알맞지 않은 것 같습니다.\n초대링크에 `https://discord.gg/`가 들어가야 합니다.')
