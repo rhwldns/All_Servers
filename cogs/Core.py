@@ -124,7 +124,7 @@ class Core(commands.Cog):
 
     @s.command(name='목록')
     async def server_list(self, ctx):
-        await ctx.send('<a:Load:829625589852930108> 데이터를 불러오는 중입니다.')
+        cc = await ctx.send('<a:Load:829625589852930108> 데이터를 불러오는 중입니다.')
         l = []
         guild = self.bot.get_guild(829561316636491796)  # All Servers 서버
         category = discord.utils.get(guild.categories, name='<< SERVER >>')
@@ -135,9 +135,12 @@ class Core(commands.Cog):
 
             with open(f"Servers/{n}", "r", encoding="UTF-8") as f:
                 text = f.readlines()
+
+            n = n.replace(".txt", "")
             sl = ''.join(text[0:])
             embed = discord.Embed(title=f'{n}', description=f'{sl}', color=0x00FFFF)
             l.append(embed)
+        await cc.delete()
         msg = await ctx.reply(embed=l[0])
         await Paginator(
             bot=self.bot, message=msg, embeds=l, only=ctx.author
