@@ -129,10 +129,11 @@ class Core(commands.Cog):
         guild = self.bot.get_guild(829561316636491796)  # All Servers 서버
         category = discord.utils.get(guild.categories, name='<< SERVER >>')
 
-        for i in category.channels:
-            n = i.name
+        file_list = os.listdir('./Servers/')
 
-            with open(f"Servers/{n}.txt", "r", encoding="UTF-8") as f:
+        for n in file_list:
+
+            with open(f"Servers/{n}", "r", encoding="UTF-8") as f:
                 text = f.readlines()
             sl = ''.join(text[0:])
             embed = discord.Embed(title=f'{n}', description=f'{sl}', color=0x00FFFF)
