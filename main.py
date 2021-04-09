@@ -31,4 +31,4 @@ async def Reload(ctx):
 
 
 
-bot.run('ODI5NTI0OTkyODgxODUyNDU3.YG5ZWg.x-mrdCUcrKBhfyaR_TPtXjcDGc0')
+bot.run('ODI5NTI0OTkyODgxODUyNDU3.YG5ZWg.6qIGkpnPAMw25c0a_gfsWM_LJ9M')

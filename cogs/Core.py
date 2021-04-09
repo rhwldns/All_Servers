@@ -3,6 +3,7 @@ from discord.ext import commands
 from pymongo import MongoClient
 from discord import utils
 from EZPaginator import Paginator
+import os
 
 coll = MongoClient('mongodb://localhost:27017/').All_Servers.user
 
@@ -33,6 +34,11 @@ class Core(commands.Cog):
             msg = await self.bot.wait_for('message', check=check)
             m = msg.content
 
+            await ctx.reply(f'`{ctx.guild.name}` 서버의 설명을 지금 입력해주세요.')
+
+            msgm = await self.bot.wait_for('message', check=check)
+            mm = msgm.content
+
             if 'https://discord.gg/' in m:
 
                 self.coll.insert_one({
@@ -43,9 +49,18 @@ class Core(commands.Cog):
                 guild = self.bot.get_guild(829561316636491796)
                 category = discord.utils.get(guild.categories, name='<< SERVER >>')
                 channel = await guild.create_text_channel(f'{str(ctx.guild.name)}', category=category)
+
+                if os.path.isfile(f'Servers/{str(ctx.guild.name)}.txt'):
+
+                    with open(f'Servers/{str(ctx.guild.name)}.txt', 'a', encoding="UTF-8") as f:
+                        f.write(mm)
+
+                else:
+
+                    with open(f'Servers/{str(ctx.guild.name)}.txt', 'a', encoding="UTF-8") as f:
+                        f.write(mm)
+
                 await ctx.reply('서버 등록이 완료되었습니다!')
-
-
 
             else:
                 await ctx.reply('초대 링크가 알맞지 않은 것 같습니다.\n초대링크에 `https://discord.gg/`가 들어가야 합니다.')
@@ -64,6 +79,13 @@ class Core(commands.Cog):
 
                 if m == '서버 삭제 동의':
                     self.coll.delete_one({"_id": str(ctx.guild.name)})
+                    guild = self.bot.get_guild(829561316636491796)
+                    channel = discord.utils.get(guild.channels, name=str(ctx.guild.name))
+                    cid = channel.id
+                    ci = self.bot.get_channel(int(cid))
+                    await ci.delete() # All Servers 에 등록되어 있는 서버 이름에 대한 채널을 삭제
+
+                    os.remove(f"Servers/{str(ctx.guild.name)}.txt")
                     await ctx.reply('서버 삭제가 완료되었습니다.')
 
                 else:
