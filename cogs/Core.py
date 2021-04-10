@@ -18,7 +18,7 @@ class Core(commands.Cog):
         if ctx.invoked_subcommand == None:
             command = ['as서버 등록', 'as서버 삭제', 'as서버 업', 'as서버 목록']
             des = ['현재 명령어를 사용한 서버를 등록합니다.', '현재 명령어를 사용한 서버를 삭제합니다.', '현재 명령어를 사용한 서버를 업 시킵니다.', '등록된 모든 서버의 목록을 불러옵니다.']
-            embed = discord.Embed(title='All Servers 도움말', description='접두사는 `as`, `ㅁㄴ`입니다.', color=0x00FFFF)
+            embed = discord.Embed(title='All Servers 도움말', description='접두사는 `as`, `ㅁㄴ`입니다.\n\n:warning: 주의 : `as서버 목록` 명령어 이외에는 \n 모두 등록한 서버에서 명령어를 사용하세요.\n', color=0x00FFFF)
 
             for i in command:
                 embed.add_field(name=f'> `{i}`', value=str(des[0]), inline=False)
