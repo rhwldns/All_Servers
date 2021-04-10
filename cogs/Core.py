@@ -62,10 +62,13 @@ class Core(commands.Cog):
                         f.write(mm)
 
                 else:
-
                     with open(f'Servers/{str(ctx.guild.name)}.txt', 'a', encoding="UTF-8") as f:
                         f.write(mm)
 
+                embed = discord.Embed(title=f'{ctx.guild.name}', description=f'{mm}', color=0x00FFFF)
+                embed.add_field(name=f'{ctx.guild.name} 서버 초대 링크', value=str(m))
+                await channel.send(embed=embed)
+                await channel.set_permissions(guild.default_role, read_messages=True, send_messages=False)
                 await ctx.reply('서버 등록이 완료되었습니다!')
 
             else:
@@ -111,7 +114,7 @@ class Core(commands.Cog):
 
         channel = self.bot.get_channel(int(channel_id))
 
-        await channel.edit(positioin=0)
+        await channel.edit(position=0)
 
         with open(f"Servers/{str(ctx.guild.name)}", "r", encoding="UTF-8") as f:
             text = f.readlines()

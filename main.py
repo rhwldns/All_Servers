@@ -20,7 +20,7 @@ if __name__ == "__main__":
 
 @bot.event
 async def on_ready():
-    await bot.change_presence(status=discord.Status.online, activity=discord.Game("as도움말 / ㅁㄴ도움말"))
+    await bot.change_presence(status=discord.Status.online, activity=discord.Game("as도움말"))
     print('All Servers#8646 On Ready.')
 
 @bot.command(name='ㄹ,', aliases=['f', '리로드', 'flfhem'])
