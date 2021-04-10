@@ -16,10 +16,16 @@ class Core(commands.Cog):
     @commands.group(name='서버')
     async def s(self, ctx):
         if ctx.invoked_subcommand == None:
-            embed = discord.Embed(title='All Server - 서버 도움말', description='`as서버 등록 <서버 이름>` - 서버를 등록합니다. \n - 등록하려는 서버에서 이 명령어를 입력해주세요. \n\n`as서버 삭제`', color=0x00FFFF)
+            command = ['as서버 등록', 'as서버 삭제', 'as서버 업', 'as서버 목록']
+            des = ['현재 명령어를 사용한 서버를 등록합니다.', '현재 명령어를 사용한 서버를 삭제합니다.', '현재 명령어를 사용한 서버를 업 시킵니다.', '등록된 모든 서버의 목록을 불러옵니다.']
+            embed = discord.Embed(title='All Servers 도움말', description='접두사는 `as`, `ㅁㄴ`입니다.', color=0x00FFFF)
+
+            for i in command:
+                embed.add_field(name=f'> `{i}`', value=str(des[0]), inline=False)
+                del des[0]
             await ctx.reply(embed=embed)
 
-    @s.command(name='등록')
+    @s.command(name='등록', aliases=['emdfhr', 'add'])
     async def add_server(self, ctx):
 
         if self.coll.find_one({"_id": str(ctx.guild.name)}):
@@ -65,7 +71,7 @@ class Core(commands.Cog):
             else:
                 await ctx.reply('초대 링크가 알맞지 않은 것 같습니다.\n초대링크에 `https://discord.gg/`가 들어가야 합니다.')
 
-    @s.command(name='삭제')
+    @s.command(name='삭제', aliases=['tkrwp', 'delete'])
     async def del_server(self, ctx):
         if self.coll.find_one({"_id": str(ctx.guild.name)}):
             if ctx.author.guild_permissions.administrator:
@@ -95,7 +101,7 @@ class Core(commands.Cog):
         else:
             await ctx.reply('해당 서버는 등록되어있지 않습니다.')
 
-    @commands.command(name = '업')
+    @s.command(name='업', aliases=['up', 'djq'])
     async def Up(self, ctx):
         c = self.bot.get_channel(829608452384096288) # 서버들 채널
         guild = self.bot.get_guild(829561316636491796) # All Servers 서버
@@ -105,24 +111,19 @@ class Core(commands.Cog):
 
         channel = self.bot.get_channel(int(channel_id))
 
-        await channel.delete()
-
-        guild = self.bot.get_guild(829561316636491796) # All Servers 서버
-        category = discord.utils.get(guild.categories, name='<< SERVER >>')
-        channel = await guild.create_text_channel(f'{str(ctx.guild.name)}', category=category)
-
-        cc = self.bot.get_channel(829608452384096288) #서버들 채널
+        await channel.edit(positioin=0)
 
         with open(f"Servers/{str(ctx.guild.name)}", "r", encoding="UTF-8") as f:
             text = f.readlines()
+
         sl = ''.join(text[0:])
 
         embed = discord.Embed(title=f'{str(ctx.guild.name)}', description=str(sl), color=0x00FFFF)
-        await cc.send(embed=embed)
+        await c.send(embed=embed)
 
-        await ctx.reply('서버 등록이 완료되었습니다!')
+        await ctx.reply('서버를 최상단에 업로드 했습니다!')
 
-    @s.command(name='목록')
+    @s.command(name='목록', alises=['ahrfhr', 'list'])
     async def server_list(self, ctx):
         cc = await ctx.send('<a:Load:829625589852930108> 데이터를 불러오는 중입니다.')
         l = []
