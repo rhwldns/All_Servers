@@ -7,7 +7,7 @@ i = discord.Intents.all()
 
 bot = commands.Bot(command_prefix=['as', 'ㅁㄴ'], help_command=None, intents=i)
 
-startup_extensions = ['cogs.Core']
+startup_extensions = ['cogs.Core', 'cogs.Util', 'jishaku']
 
 if __name__ == "__main__":
     for extension in startup_extensions:
